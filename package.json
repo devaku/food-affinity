@@ -4,12 +4,20 @@
   "description": "Food Affinity API",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon index.js"
+    "dev": "nodemon index.js"
   },
   "keywords": [
     "NodeJS",
     "PostgresSQL"
   ],
   "author": "devaku",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15"
+  }
 }
