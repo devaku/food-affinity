@@ -1,0 +1,14 @@
+LIST OF REFERENCES:
+
+KNEX STUFF
+https://devhints.io/knex
+https://hackernoon.com/setting-up-node-js-with-a-database-part-1-3f2461bdd77f
+
+To create a knex migration:
+
+knex migrate:make <name of migration>
+
+Run migration:
+
+knex migrate:latest
+
