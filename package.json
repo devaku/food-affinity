@@ -1,0 +1,15 @@
+{
+  "name": "food-affinity-api",
+  "version": "1.0.0",
+  "description": "Food Affinity API",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "keywords": [
+    "NodeJS",
+    "PostgresSQL"
+  ],
+  "author": "devaku",
+  "license": "ISC"
+}
