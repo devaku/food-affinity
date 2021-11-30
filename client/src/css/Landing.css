@@ -1,0 +1,66 @@
+#landing {
+    min-height: 100vh;
+}
+
+.light-blue {
+    background-color: #025497;
+}
+
+.yellow-text {
+    color: #f1fb93;
+}
+
+.dark-blue {
+    background-color: #01223c;
+}
+
+.fa-logo {
+    max-width: 500px;
+    opacity: 0.3;
+}
+
+.fa-title-text-position {
+    transform: translate(0, -175px);
+}
+
+.fa-title-text {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+}
+
+.landing-center {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Phones */
+@media (min-width: 425px) {
+    .fa-title-text-position {
+        transform: translate(0, -175px);
+    }
+
+    .fa-title-text {
+        font-size: 55px;
+    }
+
+    .z-btn-group {
+        transform: translate(0, -75px);
+    }
+}
+
+/* Desktops */
+@media (min-width: 992px) {
+    .fa-title-text-position {
+        transform: translate(0, -200px);
+    }
+
+    .fa-title-text {
+        font-size: 100px;
+    }
+
+    .z-btn-group {
+        transform: translate(0, -125px);
+    }
+}

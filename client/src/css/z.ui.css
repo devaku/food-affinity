@@ -1,0 +1,30 @@
+/* BUTTONS */
+.z-btn {
+    background-color: transparent;
+    color: var(--yellow);
+    border-color: var(--yellow);
+    border-radius: 0.375rem;
+    border-style: solid;
+    border-width: 0.125rem;
+
+    font-weight: 500;
+
+    padding: 0.375rem 0.75rem;
+    width: 100%;
+}
+
+.z-btn:hover {
+    background-color: var(--dark-blue);
+}
+
+.z-btn-xx-large {
+    font-size: xx-large;
+}
+
+/* LAYOUTS */
+.z-flex-center-column-space {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
