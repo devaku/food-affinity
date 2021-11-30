@@ -7,7 +7,9 @@ const PORT = process.env.PORT || 8080;
 
 // Load the environment variables
 if (process.env.NODE_ENV === undefined) {
+    console.clear();
     require('dotenv').config();
+    console.log('Configuration files loaded');
 
     // For logging purposes on debugging
     const morgan = require('morgan');

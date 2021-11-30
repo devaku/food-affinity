@@ -4,7 +4,8 @@ module.exports = function (app) {
     const session = require('express-session');
     const KnexSessionStore = require('connect-session-knex')(session);
     const environment = process.env.DB_ENVIRONMENT;
-    const knex = require('knex')(require('../../../knexfile.js')[environment]);
+    const knexfile = require('../../../knexfile.js')[environment];
+    const knex = require('knex')(knexfile);
 
     const store = new KnexSessionStore({
         knex,
