@@ -21,7 +21,38 @@
     font-size: xx-large;
 }
 
+/* BOX DESIGN */
+.header {
+    background-color: var(--rich-blue);
+}
+
+.category-bar {
+    background-color: var(--rich-blue);
+    border-radius: 0 10px 10px 0;
+}
+
+.food-options {
+    background-color: var(--rich-blue);
+    margin: 0 10px;
+    border-radius: 10px 10px 10px 10px;
+}
+
+/* TEXT RELATED */
+
+.z-text-yellow {
+    color: var(--yellow);
+}
+
+.z-text-orange {
+    color: var(--orange);
+}
+
+.z-text-brown {
+    color: var(--brown);
+}
+
 /* LAYOUTS */
+
 .z-flex-center-column-space {
     display: flex;
     align-items: center;
