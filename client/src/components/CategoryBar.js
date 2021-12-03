@@ -3,16 +3,18 @@ import FoodIcon from './FoodIcon';
 
 function CategoryBar(props) {
     return (
-        <div className="col-2">
-            <div className="category-bar container-fluid d-flex flex-column text-center">
+        <div className="col-auto">
+            <div className="category-bar container d-flex flex-column text-center">
                 <h3 className="z-text-brown">MENU</h3>
-                <div className="d-flex flex-column">
-                    <FoodIcon></FoodIcon>
-                    <FoodIcon></FoodIcon>
-                    <FoodIcon></FoodIcon>
-                    <FoodIcon></FoodIcon>
-                    <FoodIcon></FoodIcon>
-                    <FoodIcon></FoodIcon>
+                <div className="d-flex category-bar-items">
+                    {props.categories.map((category) => {
+                        return (
+                            <FoodIcon
+                                category={category}
+                                key={category.id}
+                            ></FoodIcon>
+                        );
+                    })}
                 </div>
             </div>
         </div>

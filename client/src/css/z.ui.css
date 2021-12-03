@@ -14,7 +14,7 @@
 }
 
 .z-btn:hover {
-    background-color: var(--dark-blue);
+    background-color: var(--violet);
 }
 
 .z-btn-xx-large {
@@ -28,13 +28,14 @@
 
 .category-bar {
     background-color: var(--rich-blue);
-    border-radius: 0 10px 10px 0;
 }
 
 .food-options {
     background-color: var(--rich-blue);
-    margin: 0 10px;
-    border-radius: 10px 10px 10px 10px;
+}
+
+.food-icon-product {
+    width: 200px;
 }
 
 /* TEXT RELATED */
@@ -58,4 +59,48 @@
     align-items: center;
     flex-direction: column;
     justify-content: space-evenly;
+}
+
+/* Phones */
+@media (min-width: 425px) {
+    .menu {
+        flex-direction: column;
+    }
+
+    .category-bar {
+        border-radius: 0;
+        margin-bottom: 10px;
+    }
+
+    .category-bar-items {
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+
+    .food-options {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+}
+
+/* Desktops */
+@media (min-width: 992px) {
+    .menu {
+        flex-direction: row;
+    }
+
+    .category-bar {
+        border-radius: 0 10px 10px 0;
+    }
+
+    .category-bar-items {
+        flex-direction: column;
+    }
+
+    .food-options {
+        margin: 0 10px;
+        border-radius: 10px 10px 10px 10px;
+        max-height: 700px;
+        overflow-y: auto;
+    }
 }
