@@ -24,7 +24,7 @@ database(app);
 app.use(express.static('public'));
 
 // Set the ROUTES that the API will use
-const routes = require('./routes');
+const routes = require('./api');
 routes(app);
 
 // Set PORT

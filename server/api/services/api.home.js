@@ -15,6 +15,4 @@ router.get('/logout', async function (req, res) {
     });
 });
 
-module.exports = {
-    router,
-};
+exports.router = router;
