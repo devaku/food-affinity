@@ -1,14 +1,13 @@
 /* BUTTONS */
 .z-btn {
     background-color: transparent;
-    color: var(--yellow);
     border-color: var(--yellow);
     border-radius: 0.375rem;
     border-style: solid;
     border-width: 0.125rem;
-
+    color: var(--yellow);
     font-weight: 500;
-
+    height: 100%;
     padding: 0.375rem 0.75rem;
     width: 100%;
 }
@@ -17,23 +16,25 @@
     background-color: var(--violet);
 }
 
-.z-btn-xx-large {
+.z-btn-xx .z-btn-xx-large {
     font-size: xx-large;
 }
 
 /* BOX DESIGN */
-.header {
+.header,
+.category-bar,
+.food-options,
+.footer {
     background-color: var(--rich-blue);
 }
 
-.category-bar {
-    background-color: var(--rich-blue);
+.checkout {
+    background-color: var(--dark-blue);
 }
 
-.food-options {
-    background-color: var(--rich-blue);
+.cart-item {
+    background-color: var(--yellow);
 }
-
 .food-icon-product {
     width: 200px;
 }
@@ -81,6 +82,29 @@
         max-height: 500px;
         overflow-y: auto;
     }
+    .footer {
+        height: 100px;
+    }
+
+    .footer-width {
+        min-width: 100%;
+    }
+
+    .cart-item {
+        min-width: 75%;
+    }
+    .cart-item img {
+        width: 50px;
+    }
+    .cart-item h5 {
+        font-size: 1rem;
+    }
+    .checkout-btn-h {
+        height: 50px;
+    }
+    .checkout-btn-w {
+        width: 190px;
+    }
 }
 
 /* Desktops */
@@ -102,5 +126,32 @@
         border-radius: 10px 10px 10px 10px;
         max-height: 700px;
         overflow-y: auto;
+    }
+
+    .footer {
+        height: 300px;
+    }
+
+    .footer-width {
+        min-width: 75%;
+    }
+
+    .cart-item {
+        min-width: 75%;
+    }
+
+    .cart-item img {
+        width: 80px;
+    }
+    .cart-item h5 {
+        font-size: 1.5rem;
+    }
+
+    .checkout-btn-h {
+        height: 100px;
+    }
+
+    .checkout-btn-w {
+        width: 900px;
     }
 }

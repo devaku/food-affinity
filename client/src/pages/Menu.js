@@ -117,7 +117,7 @@ function Menu() {
         },
     ]);
     return (
-        <div className="backdrop">
+        <div className="backdrop d-flex flex-column">
             <Header></Header>
             <div className="menu d-flex py-2">
                 <CategoryBar categories={categories}></CategoryBar>
