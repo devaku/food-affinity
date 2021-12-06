@@ -1,17 +1,17 @@
 module.exports = {
     product_category: [
         {
-            id: 3,
+            id: 1,
             name: `Chicken`,
             description: '',
         },
         {
-            id: 4,
+            id: 2,
             name: `Burger`,
             description: '',
         },
         {
-            id: 5,
+            id: 3,
             name: `Drinks`,
             description: '',
         },

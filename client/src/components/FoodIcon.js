@@ -9,7 +9,7 @@ function FoodIcon(props) {
                     <img
                         src="/assets/img600.png"
                         alt="Category"
-                        style={{ width: '200px' }}
+                        style={{ width: '100%' }}
                     />
                     <h4 className="z-text-brown text-center text-wrap">
                         {product.name}

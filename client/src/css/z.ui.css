@@ -1,3 +1,7 @@
+html {
+    overflow-x: hidden;
+}
+
 /* BUTTONS */
 .z-btn {
     background-color: transparent;
@@ -12,7 +16,8 @@
     width: 100%;
 }
 
-.z-btn:hover {
+.z-btn:hover,
+.z-btn:active {
     background-color: var(--violet);
 }
 
@@ -34,9 +39,6 @@
 
 .cart-item {
     background-color: var(--yellow);
-}
-.food-icon-product {
-    width: 200px;
 }
 
 /* TEXT RELATED */
@@ -63,7 +65,12 @@
 }
 
 /* Phones */
-@media (min-width: 425px) {
+@media (min-width: 320px) {
+    .fa-menu-text {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 900;
+        font-size: 2.75rem;
+    }
     .menu {
         flex-direction: column;
     }
@@ -79,19 +86,37 @@
     }
 
     .food-options {
-        max-height: 500px;
-        overflow-y: auto;
+        max-height: 350px;
+        width: 100%;
+        overflow-x: auto;
     }
+
+    .food-options-container {
+        flex-direction: row;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+    }
+
+    .food-icon-product {
+        width: 100px;
+        margin: 0 10px;
+    }
+
     .footer {
-        height: 100px;
+        min-height: 175px;
     }
 
     .footer-width {
         min-width: 100%;
     }
 
+    .cart {
+        max-height: 100px;
+        overflow-y: auto;
+    }
+
     .cart-item {
-        min-width: 75%;
+        max-width: 75%;
     }
     .cart-item img {
         width: 50px;
@@ -99,16 +124,16 @@
     .cart-item h5 {
         font-size: 1rem;
     }
-    .checkout-btn-h {
-        height: 50px;
-    }
-    .checkout-btn-w {
-        width: 190px;
-    }
 }
 
 /* Desktops */
 @media (min-width: 992px) {
+    .fa-menu-text {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 900;
+        font-size: 50px;
+    }
+
     .menu {
         flex-direction: row;
     }
@@ -124,16 +149,32 @@
     .food-options {
         margin: 0 10px;
         border-radius: 10px 10px 10px 10px;
-        max-height: 700px;
+        max-height: 500px;
+        max-width: 100%;
         overflow-y: auto;
     }
 
+    .food-options-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+
+    .food-icon-product {
+        width: 200px;
+    }
+
     .footer {
-        height: 300px;
+        height: 275px;
     }
 
     .footer-width {
         min-width: 75%;
+    }
+
+    .cart {
+        max-height: 200px;
+        overflow-y: auto;
     }
 
     .cart-item {
@@ -145,13 +186,5 @@
     }
     .cart-item h5 {
         font-size: 1.5rem;
-    }
-
-    .checkout-btn-h {
-        height: 100px;
-    }
-
-    .checkout-btn-w {
-        width: 900px;
     }
 }
