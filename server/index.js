@@ -23,6 +23,9 @@ database(app);
 // Set the PUBLIC folder
 app.use(express.static('public'));
 
+const cors = require('cors');
+app.use(cors());
+
 // Set the ROUTES that the API will use
 const routes = require('./api');
 routes(app);
