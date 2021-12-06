@@ -25,15 +25,28 @@ html {
     font-size: xx-large;
 }
 
+.z-btn-hidden {
+    background-color: transparent;
+    border: none;
+    color: transparent;
+    outline: none;
+}
+
+.width-90w {
+    max-width: 90%;
+}
+
 /* BOX DESIGN */
 .header,
 .category-bar,
 .food-options,
+.modal-food-details,
 .footer {
     background-color: var(--rich-blue);
 }
 
-.checkout {
+.checkout,
+.modal-footer {
     background-color: var(--dark-blue);
 }
 
@@ -124,6 +137,22 @@ html {
     .cart-item h5 {
         font-size: 1rem;
     }
+
+    .food-detail {
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .food-detail img {
+        width: 50%;
+    }
+
+    .food-detail-options {
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+    }
 }
 
 /* Desktops */
@@ -186,5 +215,15 @@ html {
     }
     .cart-item h5 {
         font-size: 1.5rem;
+    }
+
+    .food-detail {
+        flex-direction: row;
+        justify-content: space-evenly;
+        gap: -100px;
+    }
+
+    .food-detail img {
+        width: 25%;
     }
 }
