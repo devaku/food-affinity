@@ -171,14 +171,14 @@ module.exports = {
             description: 'Breakfast all day, everyday!',
             price: 40,
             quantity: 10,
-            product_categoryid: 5,
+            product_categoryid: 6,
         },
         {
             name: `Waffles`,
             description: 'The pancke that is rectangle.',
             price: 40,
             quantity: 10,
-            product_categoryid: 5,
+            product_categoryid: 6,
         },
     ],
 };
