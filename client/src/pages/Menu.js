@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+// Features
+import { Read_AllCategories } from '../features/categories.features';
+import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import Header from '../components/Header';
@@ -10,30 +14,13 @@ import FoodOptions from '../components/FoodOptions';
 import '../css/Menu.css';
 
 function Menu() {
-    // Debug for now
-    let [categories, setCategories] = useState([
-        {
-            id: 1,
-            name: 'Chicken',
-            description: '',
-            created_at: '2021-11-25T03:22:51.295Z',
-            updated_at: '2021-11-25T03:22:51.295Z',
-        },
-        {
-            id: 2,
-            name: 'Burger',
-            description: '',
-            created_at: '2021-11-25T03:22:51.296Z',
-            updated_at: '2021-11-25T03:22:51.296Z',
-        },
-        {
-            id: 3,
-            name: 'Drinks',
-            description: '',
-            created_at: '2021-11-25T03:22:51.297Z',
-            updated_at: '2021-11-25T03:22:51.297Z',
-        },
-    ]);
+    const dispatch = useDispatch();
+    let categories = useSelector((state) => state.categories);
+
+    useEffect(() => {
+        dispatch(Read_AllCategories);
+    }, [dispatch]);
+
     let [products, setProducts] = useState([
         {
             id: 1,

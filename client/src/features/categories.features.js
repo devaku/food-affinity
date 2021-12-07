@@ -12,7 +12,7 @@ export const Read_AllCategories = async (dispatch, getState) => {
     }
 };
 
-export default productReducer = (categories = [], action) => {
+export default function productReducer(categories = [], action) {
     let { type, payload } = action;
     switch (type) {
         case 'categories/ReadAll':
@@ -20,4 +20,4 @@ export default productReducer = (categories = [], action) => {
         default:
             return categories;
     }
-};
+}

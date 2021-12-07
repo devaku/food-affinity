@@ -8,7 +8,10 @@ function FoodIcon(props) {
         <div className="">
             {product && <FoodDetail product={product}></FoodDetail>}
             {category && (
-                <div className="d-flex flex-column align-items-center text-wrap">
+                <div
+                    style={{ width: '100px' }}
+                    className="d-flex flex-column align-items-center text-wrap"
+                >
                     <img
                         src="/assets/img600.png"
                         alt="Category"

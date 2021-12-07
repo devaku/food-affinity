@@ -16,7 +16,7 @@ function Footer(props) {
                                 <button className="z-btn">View Cart</button>
                             </div>
                         </div>
-                        <div className="cart">
+                        <div className="cart z-scrollbar">
                             {/* CART */}
                             <div className="d-flex flex-row justify-content-evenly align-items-center">
                                 <h5 className="z-text-orange mx-2">1x</h5>
