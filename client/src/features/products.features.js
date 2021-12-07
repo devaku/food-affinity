@@ -1,5 +1,15 @@
 import * as api from '../api';
 
+const productReducer = (products = [], action) => {
+    let { type, payload } = action;
+    switch (type) {
+        case 'FETCH_ALL':
+            return payload;
+        default:
+            return products;
+    }
+};
+
 export const fetch_all = () => async (dispatch) => {
     try {
         const payload = await api.READ_Products();
@@ -13,3 +23,5 @@ export const fetch_all = () => async (dispatch) => {
         console.error(error);
     }
 };
+
+export default productReducer;
