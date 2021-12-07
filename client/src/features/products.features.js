@@ -12,7 +12,7 @@ const productReducer = (products = [], action) => {
 
 export const fetch_all = () => async (dispatch) => {
     try {
-        const payload = await api.READ_Products();
+        const payload = await api.READ_AllProducts();
         console.log(payload);
         const action = {
             type: 'FETCH_ALL',
