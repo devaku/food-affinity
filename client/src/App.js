@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/z.root.css';
+import './css/z.loading.css';
 
 // Pages
 import Landing from './pages/Landing';

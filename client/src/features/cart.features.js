@@ -18,7 +18,7 @@ export const Read_SomeProducts = (categoryid) => async (dispatch, getState) => {
         const payload = await api.READ_SomeProducts(categoryid);
 
         dispatch({
-            type: 'products/ReadSome',
+            type: 'cart/ReadSome',
             payload,
         });
     } catch (error) {

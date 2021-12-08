@@ -1,11 +1,24 @@
 import * as api from '../api';
 
-const productReducer = (products = [], action) => {
+const initialState = {
+    status: 'idle',
+    entities: [],
+};
+
+const productReducer = (products = initialState, action) => {
     let { type, payload } = action;
     switch (type) {
+        case 'products/Loading':
+            return {
+                ...products,
+                status: 'loading',
+            };
         case 'products/ReadAll':
         case 'products/ReadSome':
-            return payload;
+            return {
+                status: 'idle',
+                entities: [...payload],
+            };
         default:
             return products;
     }
@@ -13,8 +26,14 @@ const productReducer = (products = [], action) => {
 
 export const Read_AllProducts = async (dispatch, getState) => {
     try {
+        // Start Loading
+        dispatch({
+            type: 'products/Loading',
+        });
+
         const payload = await api.READ_AllProducts();
 
+        // Update States
         dispatch({
             type: 'products/ReadAll',
             payload,
@@ -26,8 +45,13 @@ export const Read_AllProducts = async (dispatch, getState) => {
 
 export const Read_SomeProducts = (categoryid) => async (dispatch, getState) => {
     try {
+        // Start Loading
+        dispatch({
+            type: 'products/Loading',
+        });
         const payload = await api.READ_SomeProducts(categoryid);
 
+        // Update States
         dispatch({
             type: 'products/ReadSome',
             payload,

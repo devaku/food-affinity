@@ -2,6 +2,9 @@ import * as api from '../api';
 
 export const Read_AllCategories = async (dispatch, getState) => {
     try {
+        dispatch({
+            type: 'categories/Loading',
+        });
         const payload = await api.READ_AllCategories();
         dispatch({
             type: 'categories/ReadAll',
@@ -12,11 +15,24 @@ export const Read_AllCategories = async (dispatch, getState) => {
     }
 };
 
-export default function categoriesFeatures(categories = [], action) {
+const initialState = {
+    status: 'idle',
+    entities: [],
+};
+
+export default function categoriesFeatures(categories = initialState, action) {
     let { type, payload } = action;
     switch (type) {
+        case 'categories/Loading':
+            return {
+                ...categories,
+                status: 'loading',
+            };
         case 'categories/ReadAll':
-            return payload;
+            return {
+                status: 'idle',
+                entities: payload,
+            };
         default:
             return categories;
     }

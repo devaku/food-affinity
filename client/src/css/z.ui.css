@@ -93,7 +93,7 @@ html {
     .fa-menu-text {
         font-family: 'Roboto', sans-serif;
         font-weight: 900;
-        font-size: 2.75rem;
+        font-size: 2.3rem;
     }
     .menu {
         flex-direction: column;
@@ -102,10 +102,13 @@ html {
     .category-bar {
         border-radius: 0;
         margin-bottom: 10px;
+        max-height: 158px;
     }
 
     .category-bar-items {
+        display: flex;
         overflow-x: auto;
+        overflow-y: hidden;
     }
 
     .food-options {
@@ -180,6 +183,7 @@ html {
 
     .category-bar {
         border-radius: 0 10px 10px 0;
+        height: 500px;
         max-height: 500px;
         overflow-y: auto;
         overflow-x: hidden;
@@ -188,13 +192,14 @@ html {
     .category-bar-items {
         display: flex;
         overflow-x: hidden;
-
+        overflow-y: auto;
         flex-direction: column;
     }
 
     .food-options {
         margin: 0 10px;
         border-radius: 10px 10px 10px 10px;
+        height: 500px;
         max-height: 500px;
         max-width: 100%;
         scrollbar-width: none;

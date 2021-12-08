@@ -16,6 +16,13 @@ module.exports = {
         } catch (e) {
             console.log('\n knexStore.DatabaseQuery ERROR');
             console.error(e);
+
+            // Because for whatever reason
+            // Message isn't included? Lol
+            e = {
+                ...e,
+                message: e.message,
+            };
             throw e;
         }
     },

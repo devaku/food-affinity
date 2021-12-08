@@ -26,6 +26,20 @@ app.use(express.static('public'));
 const cors = require('cors');
 app.use(cors());
 
+// !!! SIMULATE LOAD TIME !!!
+app.use(async (req, res, next) => {
+    let timer = () => {
+        return new Promise((resolve) =>
+            setTimeout(() => {
+                resolve();
+            }, 1000)
+        );
+    };
+
+    await timer();
+    next();
+});
+
 // Set the ROUTES that the API will use
 const routes = require('./api');
 routes(app);
