@@ -12,3 +12,30 @@ Run migration:
 
 knex migrate:latest
 
+=============
+USER TRANSACTION FLOW
+
+System creates Payment Details Entry
+    - Defaults are set
+        - Status to 1 (NOT PAID)
+        - Amount is 0
+        - Provider is None
+    - If Guest then not allowed
+        - Behaves like Lazada. Must be signed in to start ordering (LOL)
+        - To add to cart in Lazada, you'll be prompted to login
+            - For Debug purposes, assume "user1" is logged in 
+
+System creates Cart (order_details)
+    - Defaults are set
+        - Total is 0
+        - Cart contents can be empty
+
+System creates cart contents
+    - Can add contents
+        - Content quantity can be Updated    
+        - Can delete contents
+            - If updated/deleted, cart total should be updated as well
+
+On Checkout proper
+    - Payment details amount is updated to final amount
+    - Provider is set (PayMaya or whatever API I find)

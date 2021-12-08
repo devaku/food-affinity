@@ -23,3 +23,8 @@ export const READ_SomeProducts = (id) => {
 export const READ_AllCategories = () => {
     return fetch(`${baseURL}/categories`).then((res) => res.json());
 };
+
+// CARTS
+export const READ_AllOrdersContents = () => {
+    return fetch(`${baseURL}/orders`).then((res) => res.json());
+};
