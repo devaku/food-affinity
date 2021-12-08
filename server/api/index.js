@@ -8,4 +8,6 @@ module.exports = function (app) {
         '/payment_details',
         require('./services/api.payment_details.js').router
     );
+
+    app.use('/debug', require('./services/api.debug.js').router);
 };
