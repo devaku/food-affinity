@@ -1,10 +1,14 @@
 import * as api from '../api';
 
-// Add a cart item
-export const Create_CartContents =
-    (categoryid) => async (dispatch, getState) => {
+// Create payment 
+export const Create_PaymentDetails =
+    (amount, provider, status) => async (dispatch, getState) => {
         try {
-            const payload = await api.READ_SomeProducts(categoryid);
+            const payload = await api.CREATE_PaymentDetails(
+                amount,
+                provider,
+                status
+            );
 
             dispatch({
                 type: 'cart/ReadSome',

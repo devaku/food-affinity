@@ -27,7 +27,7 @@ router.post('/', express.json(), async function (req, res) {
     }
 });
 
-// Read User Cart Contents
+// Read User Payment Details
 router.get('/:payment_details_id', async function (req, res) {
     try {
         let sql = sqls.payment_details.ReadPaymentDetails;
