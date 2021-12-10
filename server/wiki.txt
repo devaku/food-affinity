@@ -19,7 +19,7 @@ System creates Payment Details Entry
     - Defaults are set
         - Status to 1 (NOT PAID)
         - Amount is 0
-        - Provider is None
+        - Provider is "None"
     - If Guest then not allowed
         - Behaves like Lazada. Must be signed in to start ordering (LOL)
         - To add to cart in Lazada, you'll be prompted to login

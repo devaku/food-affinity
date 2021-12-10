@@ -29,6 +29,53 @@ export const READ_AllCategories = () => {
 };
 
 /**
+ * ORDERS
+ */
+// Create an ORDER DETAILS ENTRY
+export const CREATE_OrderDetails = (user_id, total, payment_id) => {
+    let data = {
+        user_id,
+        total,
+        payment_id,
+    };
+    return fetch(`${baseURL}/orders`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    }).then((res) => res.json());
+};
+
+// Read ORDER DETAILS ENTRY
+export const READ_OrderDetails = (order_id) => {
+    return fetch(`${baseURL}/orders/${order_id}`).then((res) => res.json());
+};
+
+// Update total of a cart item
+export const UPDATE_TotalOrderDetails = (order_id, total, user_id) => {
+    let data = {
+        order_id,
+        total,
+        user_id,
+    };
+    return fetch(`${baseURL}/orders/${order_id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    }).then((res) => res.json());
+};
+
+// Delete Cart Item
+export const DELETE_OrderDetails = (user_id, order_id) => {
+    return fetch(`${baseURL}/orders/${user_id}/${order_id}`, {
+        method: 'DELETE',
+    }).then((res) => res.json());
+};
+
+/**
  * CART
  */
 // Insert an item into the cart

@@ -1,5 +1,5 @@
 exports.CreatePaymentDetails =
-    "INSERT INTO payment_details (amount, provider, status) VALUES (<VAR1>, '<VAR2>', <VAR3>) RETURNING id";
+    "INSERT INTO payment_details (amount, provider, status) VALUES (<VAR1>, '<VAR2>', '<VAR3>') RETURNING id";
 
 exports.ReadPaymentDetails = 'SELECT * FROM payment_details WHERE id = <VAR1>';
 

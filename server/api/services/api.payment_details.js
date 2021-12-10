@@ -19,6 +19,7 @@ router.post('/', express.json(), async function (req, res) {
         let result = await knex.DatabaseQuery({
             sql,
         });
+        result = result[0];
         res.json(result);
     } catch (e) {
         res.status(400).json({
@@ -32,12 +33,11 @@ router.get('/:payment_details_id', async function (req, res) {
     try {
         let sql = sqls.payment_details.ReadPaymentDetails;
         sql = sql.replace('<VAR1>', req.params.payment_details_id);
-        await knex.DatabaseQuery({
+        let result = await knex.DatabaseQuery({
             sql,
         });
-        res.json({
-            status: 'success',
-        });
+        result = result[0];
+        res.json(result);
     } catch (e) {
         res.status(400).json({
             error: e,
@@ -74,10 +74,12 @@ router.put('/:payment_details_id', express.json(), async function (req, res) {
         sql = sql.replace('<VAR1>', amount);
         sql = sql.replace('<VAR2>', req.params.payment_details_id);
 
-        let result = await knex.DatabaseQuery({
+        await knex.DatabaseQuery({
             sql,
         });
-        res.json(result);
+        res.json({
+            status: 'success',
+        });
     } catch (e) {
         res.status(400).json({
             error: e,
