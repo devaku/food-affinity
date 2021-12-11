@@ -1,17 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-// Features
-import { Read_AllCategories } from '../features/categories.features';
-import {
-    Create_PaymentDetails,
-    Read_PaymentDetails,
-} from '../features/payment_details.features';
-import {
-    Create_OrderDetails,
-    Read_OrderDetails,
-} from '../features/order.features';
-import { useSelector, useDispatch } from 'react-redux';
-
 // Components
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -22,23 +10,62 @@ import FoodOptions from '../components/FoodOptions';
 import '../css/Menu.css';
 
 // Services
-import { GetLocalStorage } from '../services/utility';
-
-function GetCategoryName(categories, product_id) {
-    return categories.find((category) => category.id === product_id);
-}
+import { GetLocalStorage, SaveLocalStorage } from '../services/utility';
+import * as api from '../api';
 
 function Menu() {
-    const dispatch = useDispatch();
-    let [categoryName, setCategoryName] = useState('');
+    let [categoryName, setCategoryName] = useState('Menu');
+    let [categories, setCategories] = useState({
+        status: 'idle',
+        entities: [],
+    });
+    let [products, setProducts] = useState({
+        status: 'idle',
+        entities: [],
+    });
+
+    let [payment_details, setPaymentDetails] = useState({
+        id: null,
+        amount: 0,
+        provider: 'NONE',
+        status: 'NOTPAID',
+    });
+
+    let [orders, setOrders] = useState({
+        id: null,
+        payment_id: null,
+        status: 'idle',
+        total: 0,
+        user_id: null,
+    });
+
+    // Update the Products on the page when
+    // Category option is clicked
+    const handleCategoryClick = async (e) => {
+        let { value } = e.target;
+        // Determine category name
+        let categoryName = categories.entities.find(
+            (item) => item.id === parseInt(value)
+        ).name;
+
+        // Loading
+        setProducts({
+            ...products,
+            status: 'loading',
+        });
+        let response = await api.READ_SomeProducts(value);
+
+        // Update the category name
+        setCategoryName(categoryName);
+        // Display to UI
+        setProducts({
+            status: 'idle',
+            entities: response,
+        });
+    };
 
     // DEBUG
     const user_id = 1;
-
-    let categories = useSelector((state) => state.categories.entities);
-    let products = useSelector((state) => state.products.entities);
-    let payment_details = useSelector((state) => state.payment_details);
-    let orders = useSelector((state) => state.orders);
 
     // Run on startup
     /**
@@ -51,48 +78,93 @@ function Menu() {
      *
      * There's probably a better, smarter way to do this
      * But I'm too dumb to figure that out by myself
+     *
+     * IDs should be tied to user_id instead.
+     * Should be something changed for the future
      */
     useEffect(() => {
-        dispatch(Read_AllCategories);
+        let asyncWrapper = async () => {
+            // Loading
+            setCategories({
+                ...categories,
+                status: 'loading',
+            });
 
-        let zCookie = GetLocalStorage();
-        if (zCookie.payment_details_id) {
-            dispatch(Read_PaymentDetails(zCookie.payment_details_id));
-        } else {
-            dispatch(Create_PaymentDetails());
-        }
+            let response = await api.READ_AllCategories();
 
-        zCookie = GetLocalStorage();
-        if (zCookie.order_id) {
-            dispatch(Read_OrderDetails(zCookie.order_id));
-        } else {
+            // Idle
+            setCategories({
+                status: 'idle',
+                entities: response,
+            });
+
             let zCookie = GetLocalStorage();
-            dispatch(Create_OrderDetails(user_id, zCookie.payment_details_id));
-        }
-    }, [dispatch]);
+            if (zCookie.payment_details_id) {
+                let response = await api.READ_PaymentDetails(
+                    zCookie.payment_details_id
+                );
+                setPaymentDetails({
+                    ...payment_details,
+                    ...response,
+                });
+            } else {
+                // Apply defaults
+                let { id: payment_details_id } =
+                    await api.CREATE_PaymentDetails(
+                        payment_details.amount,
+                        payment_details.provider,
+                        payment_details.status
+                    );
 
-    // Update the Category Name on the top
-    // Depending on what product is on display
-    useEffect(() => {
-        console.log('USE EFFECT 2');
-        if (products.length > 0) {
-            let { product_categoryid } = products[0];
+                setPaymentDetails({
+                    ...payment_details,
+                    id: payment_details_id,
+                });
 
-            let category = GetCategoryName(categories, product_categoryid);
-
-            if (category) {
-                setCategoryName(category.name);
+                zCookie.payment_details_id = payment_details_id;
             }
-        }
-    }, [products]);
+
+            if (zCookie.order_id) {
+                let response = await api.READ_OrderDetails(zCookie.order_id);
+                setOrders({
+                    ...orders,
+                    ...response,
+                });
+            } else {
+                let { id: order_id } = await api.CREATE_OrderDetails(
+                    user_id,
+                    orders.total,
+                    zCookie.payment_details_id
+                );
+
+                setOrders({
+                    ...orders,
+                    id: order_id,
+                    payment_id: zCookie.payment_details_id,
+                });
+
+                zCookie.order_id = order_id;
+            }
+
+            SaveLocalStorage(zCookie);
+        };
+        asyncWrapper();
+    }, []);
 
     return (
         <div className="backdrop d-flex flex-column">
             <Header categoryName={categoryName}></Header>
             <div className="menu d-flex py-2">
-                <CategoryBar categories={categories}></CategoryBar>
-                {/* <span className="col-sm"></span> */}
-                <FoodOptions products={products}></FoodOptions>
+                <CategoryBar
+                    categories={categories.entities}
+                    handleCategoryClick={handleCategoryClick}
+                    categoryStatus={categories.status}
+                ></CategoryBar>
+                <FoodOptions
+                    products={products.entities}
+                    productHandler={setProducts}
+                    productStatus={products.status}
+                ></FoodOptions>
             </div>
             <Footer></Footer>
         </div>

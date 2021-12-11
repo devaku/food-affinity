@@ -1,14 +1,10 @@
 import React from 'react';
 import FoodIcon from './FoodIcon';
 
-import { useSelector } from 'react-redux';
-
 function CategoryBar(props) {
-    let categoriesStatus = useSelector((state) => state.categories.status);
-
     // Loading Bar
     // There should be a better way to do this. Ugh
-    if (categoriesStatus === 'loading') {
+    if (props.categoryStatus === 'loading') {
         return (
             <div className="col-auto">
                 <div>
@@ -40,6 +36,9 @@ function CategoryBar(props) {
                                 <FoodIcon
                                     category={category}
                                     key={category.id}
+                                    handleCategoryClick={
+                                        props.handleCategoryClick
+                                    }
                                 ></FoodIcon>
                             );
                         })}

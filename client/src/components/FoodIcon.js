@@ -1,25 +1,10 @@
 import React from 'react';
 
-// Features
-import { Read_SomeProducts } from '../features/products.features';
-import { useDispatch } from 'react-redux';
-
 // Components
 import FoodDetail from './FoodDetail';
 
 function FoodIcon(props) {
-    let { product, category } = props;
-    // console.log(product);
-    let dispatch = useDispatch();
-
-    const handleClick = (e) => {
-        let { value } = e.target;
-
-        // Check product category
-        // If same as before, do nothing
-
-        dispatch(Read_SomeProducts(value));
-    };
+    let { product, category, handleCategoryClick } = props;
 
     return (
         <div className="">
@@ -28,7 +13,7 @@ function FoodIcon(props) {
                 <button
                     value={category.id}
                     className="z-btn-hidden"
-                    onClick={handleClick}
+                    onClick={handleCategoryClick}
                 >
                     <div
                         style={{ width: '100px', pointerEvents: 'none' }}

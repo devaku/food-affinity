@@ -1,11 +1,8 @@
 import React from 'react';
 import FoodIcon from './FoodIcon';
-import { useSelector } from 'react-redux';
 
 function FoodOptions(props) {
-    let productStatus = useSelector((state) => state.products.status);
-
-    if (productStatus === 'loading') {
+    if (props.productStatus === 'loading') {
         return (
             <div className="col d-flex align-items-center justify-content-center food-options z-scrollbar">
                 <div className="loader" />
