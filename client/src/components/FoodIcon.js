@@ -4,11 +4,16 @@ import React from 'react';
 import FoodDetail from './FoodDetail';
 
 function FoodIcon(props) {
-    let { product, category, handleCategoryClick } = props;
+    let { product, category, handleCategoryClick, handleAddCart } = props;
 
     return (
         <div className="">
-            {product && <FoodDetail product={product}></FoodDetail>}
+            {product && (
+                <FoodDetail
+                    product={product}
+                    handleAddCart={handleAddCart}
+                ></FoodDetail>
+            )}
             {category && (
                 <button
                     value={category.id}

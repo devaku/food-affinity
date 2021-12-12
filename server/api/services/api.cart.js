@@ -44,13 +44,18 @@ router.get('/:order_id', async function (req, res) {
 });
 
 // Update Quantity of Item in Cart
+// Compute new total
+// Return cart items json
 router.put('/:order_id', express.json(), async function (req, res) {
     try {
+        // Update quantity of item in new cart
         let { quantity, product_id } = req.body;
         let sql = sqls.orders.UpdateQuantityOrderContents;
         sql = sql.replace('<VAR1>', quantity);
         sql = sql.replace('<VAR2>', req.params.order_id);
         sql = sql.replace('<VAR3>', product_id);
+
+        
 
         let result = await knex.DatabaseQuery({
             sql,

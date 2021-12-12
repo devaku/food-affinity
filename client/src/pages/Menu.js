@@ -32,12 +32,24 @@ function Menu() {
     });
 
     let [orders, setOrders] = useState({
-        id: null,
+        id: null, // order_id
         payment_id: null,
         status: 'idle',
         total: 0,
         user_id: null,
     });
+
+    let [cart, setCart] = useState({
+        order_id: null,
+        entities: [
+            {
+                product_id: null,
+                quantity: 0,
+            },
+        ],
+    });
+
+    let [productReference, setProductReference] = useState([]);
 
     // Update the Products on the page when
     // Category option is clicked
@@ -64,8 +76,93 @@ function Menu() {
         });
     };
 
+    const handleAddCart = async (e, quantity, closeModal) => {
+        let { value: product_id } = e.target;
+
+        // Add item to cart
+        // Get the product reference to display onto cart
+        let promiseArray = await Promise.all([
+            api.CREATE_CartContents(orders.id, product_id, quantity),
+            api.READ_AProduct(product_id),
+        ]);
+
+        let product = promiseArray[1];
+        setProductReference([...productReference, product]);
+
+        let cartItem = {
+            product_id,
+            quantity,
+        };
+
+        // Update state
+        setCart({
+            ...cart,
+            entities: [...cart.entities, cartItem],
+        });
+
+        closeModal(false);
+    };
+
+    const handleEditCart = async (e, quantity, closeModal) => {
+        let { value: product_id } = e.target;
+        console.log('EDIT CART CLICK');
+
+        return;
+
+        /**
+         * This code should all just be done server side.
+         * Preferrably in one SQL function. >_>
+         */
+
+        // Edit the item on the cart
+        await api.UPDATE_CartQuantityContents(orders.id, product_id, quantity);
+
+        // Update the amount 
+
+        // Read the cart again to update everything. LOL
+        // This is VERY inefficient
+        await ReadCart(orders.id);
+
+
+
+        // closeModal(false);
+    };
+
+    const handleRemoveItem = async (e, closeModal) => {
+        let { value: product_id } = e.target;
+        console.log('REMOVE ITEM CLICK');
+        closeModal(false);
+    };
+
     // DEBUG
     const user_id = 1;
+
+    // Load the cart
+    /**
+     * For efficiency sake,
+     * when reading the cart, the DB should just return
+     * with all the contents as well, instead of querying each product
+     * individually. This is NOT how you should do this.
+     */
+    const ReadCart = async (order_id) => {
+        let response = await api.READ_CartContents(order_id);
+
+        for (let x = 0; x < response.length; x++) {
+            let { product_id } = response[x];
+
+            let cartItem = await api.READ_AProduct(product_id);
+
+            let temp = productReference;
+            temp.push(cartItem);
+            setProductReference(temp);
+        }
+
+        setCart({
+            ...cart,
+            order_id,
+            entities: response,
+        });
+    };
 
     // Run on startup
     /**
@@ -146,6 +243,7 @@ function Menu() {
                 zCookie.order_id = order_id;
             }
 
+            await ReadCart(zCookie.order_id);
             SaveLocalStorage(zCookie);
         };
         asyncWrapper();
@@ -163,10 +261,16 @@ function Menu() {
                 <FoodOptions
                     products={products.entities}
                     productHandler={setProducts}
+                    handleAddCart={handleAddCart}
                     productStatus={products.status}
                 ></FoodOptions>
             </div>
-            <Footer></Footer>
+            <Footer
+                cart={cart}
+                productReference={productReference}
+                handleEditCart={handleEditCart}
+                handleRemoveItem={handleRemoveItem}
+            ></Footer>
         </div>
     );
 }

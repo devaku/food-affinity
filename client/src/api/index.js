@@ -15,9 +15,15 @@ export const READ_AllProducts = () => {
     return fetch(`${baseURL}/products`).then((res) => res.json());
 };
 
+export const READ_AProduct = (id) => {
+    return fetch(`${baseURL}/products/${id}`).then((res) => res.json());
+};
+
 // Get some products based on category
 export const READ_SomeProducts = (id) => {
-    return fetch(`${baseURL}/products/${id}`).then((res) => res.json());
+    return fetch(`${baseURL}/products/category/${id}`).then((res) =>
+        res.json()
+    );
 };
 
 /**

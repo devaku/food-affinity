@@ -1,5 +1,7 @@
 exports.GetAllProducts = 'SELECT * FROM product';
 
+exports.GetAProducts = 'SELECT * FROM product where id = <VAR1>';
+
 /**
  * <VAR 1> = Category ID
  */

@@ -15,7 +15,11 @@ function FoodOptions(props) {
             <div className="d-flex food-options-container py-3">
                 {props.products.map((product) => {
                     return (
-                        <FoodIcon product={product} key={product.id}></FoodIcon>
+                        <FoodIcon
+                            product={product}
+                            key={product.id}
+                            handleAddCart={props.handleAddCart}
+                        ></FoodIcon>
                     );
                 })}
             </div>
