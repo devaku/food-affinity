@@ -68,7 +68,7 @@ function EditCartItem(props) {
             >
                 <button
                     className="z-btn"
-                    value={product.id}
+                    value={product.product_id}
                     onClick={(e) => {
                         handleEditCart(e, parseInt(quantity), setShow);
                     }}
@@ -77,7 +77,7 @@ function EditCartItem(props) {
                 </button>
                 <button
                     className="z-btn"
-                    value={product.id}
+                    value={product.product_id}
                     onClick={(e) => {
                         handleRemoveItem(e, setShow);
                     }}

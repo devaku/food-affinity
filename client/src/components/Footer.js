@@ -2,16 +2,16 @@ import React from 'react';
 import CartItem from './CartItem';
 
 function Footer(props) {
-    let { cart, productReference, handleEditCart, handleRemoveItem } = props;
+    let { cart, handleEditCart, handleRemoveItem } = props;
 
     let jsxCart;
 
-    if (cart.order_id && cart.entities.length > 0) {
+    if (cart.order_id && cart.entities && cart.entities.length > 0) {
         jsxCart = cart.entities.map((cartItem, index) => {
             return (
                 <CartItem
                     cartItem={cartItem}
-                    key={`ci-${cartItem.id}`}
+                    key={`ci${index}${cartItem.order_id}`}
                     handleEditCart={handleEditCart}
                     handleRemoveItem={handleRemoveItem}
                 ></CartItem>

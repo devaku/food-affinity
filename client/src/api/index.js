@@ -85,11 +85,17 @@ export const DELETE_OrderDetails = (user_id, order_id) => {
  * CART
  */
 // Insert an item into the cart
-export const CREATE_CartContents = (order_id, product_id, quantity) => {
+export const CREATE_CartContents = (
+    order_id,
+    product_id,
+    quantity,
+    user_id
+) => {
     let data = {
         order_id,
         product_id,
         quantity,
+        user_id,
     };
     return fetch(`${baseURL}/cart`, {
         method: 'POST',
@@ -106,11 +112,17 @@ export const READ_CartContents = (order_id) => {
 };
 
 // Update quantity of a cart item
-export const UPDATE_CartQuantityContents = (order_id, product_id, quantity) => {
+export const UPDATE_CartQuantityContents = (
+    order_id,
+    product_id,
+    quantity,
+    user_id
+) => {
     let data = {
         order_id,
         product_id,
         quantity,
+        user_id,
     };
     return fetch(`${baseURL}/cart/${order_id}`, {
         method: 'PUT',
@@ -122,8 +134,8 @@ export const UPDATE_CartQuantityContents = (order_id, product_id, quantity) => {
 };
 
 // Delete Cart Item
-export const DELETE_CartContents = (order_id, product_id) => {
-    return fetch(`${baseURL}/cart/${order_id}/${product_id}`, {
+export const DELETE_CartContents = (user_id, order_id, product_id) => {
+    return fetch(`${baseURL}/cart/${user_id}/${order_id}/${product_id}`, {
         method: 'DELETE',
     }).then((res) => res.json());
 };

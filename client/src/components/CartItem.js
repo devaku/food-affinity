@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import EditCartItem from './EditCartItem.modal';
 
 function CartItem(props) {
-    console.log(props);
     let { quantity, name, price } = props.cartItem;
     let { handleEditCart, handleRemoveItem } = props;
 

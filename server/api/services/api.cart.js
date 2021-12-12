@@ -11,7 +11,7 @@ const sqls = require('../../lib_modules/utility/database/SQLs');
 // Returns order_id
 router.post('/', express.json(), async function (req, res) {
     try {
-        let { order_id, product_id, quantity } = req.body;
+        let { order_id, product_id, quantity, user_id } = req.body;
         let sql = sqls.orders.CreateOrderContents;
         sql = sql.replace('<VAR1>', order_id);
         sql = sql.replace('<VAR2>', product_id);
@@ -19,6 +19,19 @@ router.post('/', express.json(), async function (req, res) {
         let result = await knex.DatabaseQuery({
             sql,
         });
+
+        // Calculate total of cart
+        sql = sqls.orders.CalculateTotalOfCart;
+        sql = sql.replace('<VAR1>', order_id);
+        let total = await knex.DatabaseQuery({ sql });
+        total = total[0].total;
+
+        // Update order_details
+        sql = sqls.orders.UpdateTotalOrderEntry;
+        sql = sql.replace('<VAR1>', parseInt(total));
+        sql = sql.replace('<VAR2>', order_id);
+        sql = sql.replace('<VAR3>', user_id);
+        await knex.DatabaseQuery({ sql });
 
         res.json(result);
     } catch (e) {
@@ -58,9 +71,8 @@ router.get('/:order_id', async function (req, res) {
 // Return cart items json
 router.put('/:order_id', express.json(), async function (req, res) {
     try {
+        let { quantity, product_id, user_id } = req.body;
         // Update quantity of item in new cart
-
-        let { quantity, product_id } = req.body;
         let sql = sqls.orders.UpdateQuantityOrderContents;
         sql = sql.replace('<VAR1>', quantity);
         sql = sql.replace('<VAR2>', req.params.order_id);
@@ -71,7 +83,14 @@ router.put('/:order_id', express.json(), async function (req, res) {
         sql = sqls.orders.CalculateTotalOfCart;
         sql = sql.replace('<VAR1>', req.params.order_id);
         let total = await knex.DatabaseQuery({ sql });
-        total = total[0];
+        total = total[0].total;
+
+        // Update order_details
+        sql = sqls.orders.UpdateTotalOrderEntry;
+        sql = sql.replace('<VAR1>', parseInt(total));
+        sql = sql.replace('<VAR2>', req.params.order_id);
+        sql = sql.replace('<VAR3>', user_id);
+        await knex.DatabaseQuery({ sql });
 
         // Get updated cart items
         sql = sqls.orders.ReadCartContentsJSON;
@@ -91,16 +110,52 @@ router.put('/:order_id', express.json(), async function (req, res) {
 });
 
 // Delete Item in Cart
-router.delete('/:order_id/:product_id', async function (req, res) {
+router.delete('/:user_id/:order_id/:product_id', async function (req, res) {
     try {
+        // Delete cart item
         let sql = sqls.orders.DeleteOrderContents;
         sql = sql.replace('<VAR1>', req.params.order_id);
         sql = sql.replace('<VAR2>', req.params.product_id);
+        await knex.DatabaseQuery({ sql });
 
-        let result = await knex.DatabaseQuery({
+        // Calculate total of cart
+        sql = sqls.orders.CalculateTotalOfCart;
+        sql = sql.replace('<VAR1>', req.params.order_id);
+        let total = await knex.DatabaseQuery({ sql });
+        total = total[0].total;
+        console.log('TOTAL AMOUNT: ', total);
+
+        // Will return null if there is nothing in the cart
+        if (!total) {
+            total = 0;
+        }
+
+        // Update order_details
+        sql = sqls.orders.UpdateTotalOrderEntry;
+        sql = sql.replace('<VAR1>', parseInt(total));
+        sql = sql.replace('<VAR2>', req.params.order_id);
+        sql = sql.replace('<VAR3>', req.params.user_id);
+        await knex.DatabaseQuery({ sql });
+
+        await knex.DatabaseQuery({
             sql,
         });
-        res.json(result);
+
+        // Get updated cart items
+        sql = sqls.orders.ReadCartContentsJSON;
+        sql = sql.replace('<VAR1>', req.params.order_id);
+        let items = await knex.DatabaseQuery({ sql });
+        items = items[0].json_agg;
+
+        // Will return null if empty
+        if (!items) {
+            items = [];
+        }
+
+        res.json({
+            total,
+            items,
+        });
     } catch (e) {
         res.status(400).json({
             error: e,

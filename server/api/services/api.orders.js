@@ -90,15 +90,23 @@ router.put('/:order_details_id', express.json(), async function (req, res) {
 // Delete Order Entry
 router.delete('/:user_id/:order_details_id/', async function (req, res) {
     try {
+        // Delete the cart item
         let sql = sqls.orders.DeleteOrderEntry;
         sql = sql.replace('<VAR1>', req.params.user_id);
         sql = sql.replace('<VAR2>', req.params.order_details_id);
-
-        let result = await knex.DatabaseQuery({
+        await knex.DatabaseQuery({
             sql,
         });
+
+        // Get updated cart items
+        sql = sqls.orders.ReadCartContentsJSON;
+        sql = sql.replace('<VAR1>', req.params.order_id);
+        let items = await knex.DatabaseQuery({ sql });
+        items = items[0].json_agg;
+
         res.json({
-            status: 'success',
+            total,
+            items,
         });
     } catch (e) {
         res.status(400).json({

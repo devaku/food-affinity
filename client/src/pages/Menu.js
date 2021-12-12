@@ -50,8 +50,6 @@ function Menu() {
         ],
     });
 
-    let [productReference, setProductReference] = useState([]);
-
     // Update the Products on the page when
     // Category option is clicked
     const handleCategoryClick = async (e) => {
@@ -82,24 +80,10 @@ function Menu() {
 
         // Add item to cart
         // Get the product reference to display onto cart
-        let promiseArray = await Promise.all([
-            api.CREATE_CartContents(orders.id, product_id, quantity),
-            api.READ_AProduct(product_id),
+        await Promise.all([
+            api.CREATE_CartContents(orders.id, product_id, quantity, user_id),
+            ReadCart(orders.id),
         ]);
-
-        let product = promiseArray[1];
-        setProductReference([...productReference, product]);
-
-        let cartItem = {
-            product_id,
-            quantity,
-        };
-
-        // Update state
-        setCart({
-            ...cart,
-            entities: [...cart.entities, cartItem],
-        });
 
         closeModal(false);
     };
@@ -107,45 +91,41 @@ function Menu() {
     const handleEditCart = async (e, quantity, closeModal) => {
         let { value: product_id } = e.target;
 
-        /**
-         * This code should all just be done server side.
-         * Preferrably in one SQL function. >_>
-         */
-
         // Edit the item on the cart
         let result = await api.UPDATE_CartQuantityContents(
             orders.id,
             product_id,
-            quantity
+            quantity,
+            user_id
         );
 
-        console.log(result);
+        let { total, items } = result;
+        setTotal(parseInt(total));
 
-        return;
+        setCart({
+            ...cart,
+            order_id: orders.id,
+            entities: items,
+        });
 
-        // Update cart
-        // This code is SERIOULSY inefficient. >_>
-        setProductReference([]);
-        let { items, total } = result;
-        for (let x = 0; x < items.length; x++) {
-            // let temp = [];
-            // temp.push(items[x]);
-            // setProductReference(temp);
-        }
-
-        // setCart({
-        //     ...cart,
-        //     order_id,
-        //     entities: response,
-        // });
-
-        // closeModal(false);
+        closeModal(false);
     };
 
     const handleRemoveItem = async (e, closeModal) => {
         let { value: product_id } = e.target;
-        console.log('REMOVE ITEM CLICK');
         closeModal(false);
+
+        // Edit the item on the cart
+        let result = await api.DELETE_CartContents(user_id, orders.id, product_id);
+
+        let { total, items } = result;
+        setTotal(parseInt(total));
+
+        setCart({
+            ...cart,
+            order_id: orders.id,
+            entities: items,
+        });
     };
 
     const handleCheckout = async (e) => {
