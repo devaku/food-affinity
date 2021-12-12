@@ -54,13 +54,24 @@ router.put('/:order_id', express.json(), async function (req, res) {
         sql = sql.replace('<VAR1>', quantity);
         sql = sql.replace('<VAR2>', req.params.order_id);
         sql = sql.replace('<VAR3>', product_id);
+        await knex.DatabaseQuery({ sql });
 
-        
+        // Calculate total of cart
+        sql = sql.orders.CalculateTotalOfCart;
+        sql = sql.replace('<VAR1>', req.params.order_id);
+        let total = await knex.DatabaseQuery({ sql });
+        total = total[0];
 
-        let result = await knex.DatabaseQuery({
-            sql,
+        // Get updated cart items
+        sql = sql.orders.ReadCartContentsJSON;
+        sql = sql.replace('<VAR1>', req.params.order_id);
+        let items = await knex.DatabaseQuery({ sql });
+        items = items[0];
+
+        res.json({
+            total,
+            items,
         });
-        res.json(result);
     } catch (e) {
         res.status(400).json({
             error: e,

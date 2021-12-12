@@ -22,3 +22,9 @@ exports.UpdatePaymentIdOrderEntry =
 
 exports.DeleteOrderEntry =
     'DELETE FROM order_details WHERE id = <VAR1> AND user_id = <VAR2>';
+
+exports.CalculateTotalOfCart =
+    'SELECT SUM(quantity * price) as total FROM cart_view WHERE order_id = <VAR1>';
+
+exports.ReadCartContentsJSON =
+    'SELECT json_agg(result) FROM (SELECT * FROM cart_view WHERE order_id = <VAR1>) as result';
