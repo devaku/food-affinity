@@ -19,6 +19,7 @@ router.post('/', express.json(), async function (req, res) {
         let result = await knex.DatabaseQuery({
             sql,
         });
+
         res.json(result);
     } catch (e) {
         res.status(400).json({
@@ -30,12 +31,21 @@ router.post('/', express.json(), async function (req, res) {
 // Read User Cart Contents
 router.get('/:order_id', async function (req, res) {
     try {
-        let sql = sqls.orders.ReadOrderContents;
+        let sql = sqls.orders.ReadCartContentsJSON;
         sql = sql.replace('<VAR1>', req.params.order_id);
-        let result = await knex.DatabaseQuery({
-            sql,
+        let items = await knex.DatabaseQuery({ sql });
+        items = items[0].json_agg;
+
+        // Calculate total of cart
+        sql = sqls.orders.CalculateTotalOfCart;
+        sql = sql.replace('<VAR1>', req.params.order_id);
+        let total = await knex.DatabaseQuery({ sql });
+        total = parseInt(total[0].total);
+
+        res.json({
+            items,
+            total,
         });
-        res.json(result);
     } catch (e) {
         res.status(400).json({
             error: e,
@@ -49,6 +59,7 @@ router.get('/:order_id', async function (req, res) {
 router.put('/:order_id', express.json(), async function (req, res) {
     try {
         // Update quantity of item in new cart
+
         let { quantity, product_id } = req.body;
         let sql = sqls.orders.UpdateQuantityOrderContents;
         sql = sql.replace('<VAR1>', quantity);
@@ -57,16 +68,16 @@ router.put('/:order_id', express.json(), async function (req, res) {
         await knex.DatabaseQuery({ sql });
 
         // Calculate total of cart
-        sql = sql.orders.CalculateTotalOfCart;
+        sql = sqls.orders.CalculateTotalOfCart;
         sql = sql.replace('<VAR1>', req.params.order_id);
         let total = await knex.DatabaseQuery({ sql });
         total = total[0];
 
         // Get updated cart items
-        sql = sql.orders.ReadCartContentsJSON;
+        sql = sqls.orders.ReadCartContentsJSON;
         sql = sql.replace('<VAR1>', req.params.order_id);
         let items = await knex.DatabaseQuery({ sql });
-        items = items[0];
+        items = items[0].json_agg;
 
         res.json({
             total,

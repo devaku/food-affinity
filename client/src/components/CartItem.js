@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import EditCartItem from './EditCartItem.modal';
 
 function CartItem(props) {
-    let { quantity } = props.cartItem;
-    let { name, price } = props.productReference;
+    console.log(props);
+    let { quantity, name, price } = props.cartItem;
     let { handleEditCart, handleRemoveItem } = props;
 
     // Modal controls
@@ -15,10 +15,10 @@ function CartItem(props) {
     const handleQuantity = (e) => {
         let { name } = e.target;
         if (name === 'increment') {
-            seteQuantity(quantity + 1);
+            seteQuantity(eQuantity + 1);
         } else {
-            if (quantity > 0) {
-                seteQuantity(quantity - 1);
+            if (eQuantity > 0) {
+                seteQuantity(eQuantity - 1);
             }
         }
     };
@@ -43,7 +43,7 @@ function CartItem(props) {
                 </button>
             </div>
             <EditCartItem
-                product={props.productReference}
+                product={props.cartItem}
                 show={show}
                 quantity={eQuantity}
                 setShow={setShow}

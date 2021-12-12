@@ -15,6 +15,7 @@ import * as api from '../api';
 
 function Menu() {
     let [categoryName, setCategoryName] = useState('Menu');
+    let [total, setTotal] = useState('');
     let [categories, setCategories] = useState({
         status: 'idle',
         entities: [],
@@ -105,9 +106,6 @@ function Menu() {
 
     const handleEditCart = async (e, quantity, closeModal) => {
         let { value: product_id } = e.target;
-        console.log('EDIT CART CLICK');
-
-        return;
 
         /**
          * This code should all just be done server side.
@@ -115,15 +113,31 @@ function Menu() {
          */
 
         // Edit the item on the cart
-        await api.UPDATE_CartQuantityContents(orders.id, product_id, quantity);
+        let result = await api.UPDATE_CartQuantityContents(
+            orders.id,
+            product_id,
+            quantity
+        );
 
-        // Update the amount 
+        console.log(result);
 
-        // Read the cart again to update everything. LOL
-        // This is VERY inefficient
-        await ReadCart(orders.id);
+        return;
 
+        // Update cart
+        // This code is SERIOULSY inefficient. >_>
+        setProductReference([]);
+        let { items, total } = result;
+        for (let x = 0; x < items.length; x++) {
+            // let temp = [];
+            // temp.push(items[x]);
+            // setProductReference(temp);
+        }
 
+        // setCart({
+        //     ...cart,
+        //     order_id,
+        //     entities: response,
+        // });
 
         // closeModal(false);
     };
@@ -134,33 +148,24 @@ function Menu() {
         closeModal(false);
     };
 
+    const handleCheckout = async (e) => {
+        console.log('checkout click');
+    };
+
     // DEBUG
     const user_id = 1;
 
     // Load the cart
-    /**
-     * For efficiency sake,
-     * when reading the cart, the DB should just return
-     * with all the contents as well, instead of querying each product
-     * individually. This is NOT how you should do this.
-     */
     const ReadCart = async (order_id) => {
         let response = await api.READ_CartContents(order_id);
 
-        for (let x = 0; x < response.length; x++) {
-            let { product_id } = response[x];
-
-            let cartItem = await api.READ_AProduct(product_id);
-
-            let temp = productReference;
-            temp.push(cartItem);
-            setProductReference(temp);
-        }
+        let { total, items } = response;
+        setTotal(total);
 
         setCart({
             ...cart,
             order_id,
-            entities: response,
+            entities: items,
         });
     };
 
@@ -267,9 +272,10 @@ function Menu() {
             </div>
             <Footer
                 cart={cart}
-                productReference={productReference}
                 handleEditCart={handleEditCart}
                 handleRemoveItem={handleRemoveItem}
+                handleCheckout={handleCheckout}
+                total={total}
             ></Footer>
         </div>
     );

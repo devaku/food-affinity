@@ -46,7 +46,7 @@ function EditCartItem(props) {
                                 -
                             </button>
                             <input
-                                type="text"
+                                type="numeric"
                                 className="text-center"
                                 readOnly
                                 value={quantity}
@@ -70,7 +70,7 @@ function EditCartItem(props) {
                     className="z-btn"
                     value={product.id}
                     onClick={(e) => {
-                        handleEditCart(e, quantity, setShow);
+                        handleEditCart(e, parseInt(quantity), setShow);
                     }}
                 >
                     Edit Item

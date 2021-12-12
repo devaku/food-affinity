@@ -9,6 +9,7 @@ SELECT
 	pid.id as product_id,
 	pid.name,
 	pid.price,
+	pid.description,
 	oi.quantity
 FROM
 	order_items as oi

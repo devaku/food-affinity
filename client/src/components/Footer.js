@@ -11,8 +11,7 @@ function Footer(props) {
             return (
                 <CartItem
                     cartItem={cartItem}
-                    key={cartItem.id}
-                    productReference={productReference[index]}
+                    key={`ci-${cartItem.id}`}
                     handleEditCart={handleEditCart}
                     handleRemoveItem={handleRemoveItem}
                 ></CartItem>
@@ -50,7 +49,12 @@ function Footer(props) {
             <div className="checkout flex-grow-1 d-flex flex-column justify-content-center align-items-center">
                 <div className="footer-width d-flex flex-row justify-content-evenly align-items-center h-100">
                     <div className="flex-grow-1 mx-2">
-                        <button className="z-btn">Checkout TOTAL: </button>
+                        <button
+                            onClick={props.handleCheckout}
+                            className="z-btn"
+                        >
+                            Checkout TOTAL: {props.total}
+                        </button>
                     </div>
                 </div>
             </div>
