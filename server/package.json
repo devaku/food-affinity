@@ -4,7 +4,8 @@
   "description": "Food Affinity API",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "nodemon test.js"
   },
   "keywords": [
     "NodeJS",
@@ -13,6 +14,7 @@
   "author": "devaku",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.24.0",
     "connect-session-knex": "^2.1.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",

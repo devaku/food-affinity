@@ -8,4 +8,7 @@ module.exports = function (app) {
         '/payment_details',
         require('./services/api.payment_details.js').router
     );
+
+    // Payment related
+    app.use('/payments/paymaya', require('./payments/api.paymaya').router);
 };

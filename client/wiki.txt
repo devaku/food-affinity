@@ -38,3 +38,11 @@ System creates cart contents
 On Checkout proper
     - Payment details amount is updated to final amount
     - Provider is set (PayMaya or whatever API I find)
+
+
+=========
+PAYAMAY transaction FLOW
+- Create Payment Token
+    - Tokenize credit card basically
+- Using token, server POSTs a Payment
+- Server pays, then status is returned
