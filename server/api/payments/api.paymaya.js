@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const paymaya = require('../../lib_modules/payments/paymaya');
+
 const knex = require('../../lib_modules/utility/database/knexStore');
 const sqls = require('../../lib_modules/utility/database/SQLs');
 
@@ -11,29 +13,22 @@ const sqls = require('../../lib_modules/utility/database/SQLs');
 // Returns order_id
 router.post('/', express.json(), async function (req, res) {
     try {
-        let { order_id, product_id, quantity, user_id } = req.body;
-        let sql = sqls.orders.CreateOrderContents;
-        sql = sql.replace('<VAR1>', order_id);
-        sql = sql.replace('<VAR2>', product_id);
-        sql = sql.replace('<VAR3>', quantity);
-        let result = await knex.DatabaseQuery({
-            sql,
-        });
+        // Check headers
+        let key = req.headers['x-api-key'];
+        if (key != 'dragons') {
+            return res.status(401).send('Invalid API Key');
+        }
 
-        // Calculate total of cart
-        sql = sqls.orders.CalculateTotalOfCart;
-        sql = sql.replace('<VAR1>', order_id);
-        let total = await knex.DatabaseQuery({ sql });
-        total = total[0].total;
+        let { paymentToken, user_id, order_id } = req.body;
 
-        // Update order_details
-        sql = sqls.orders.UpdateTotalOrderEntry;
-        sql = sql.replace('<VAR1>', parseInt(total));
-        sql = sql.replace('<VAR2>', order_id);
-        sql = sql.replace('<VAR3>', user_id);
-        await knex.DatabaseQuery({ sql });
+        // Returns an AUTH URL if things worked out
+        let response = await paymaya.CreatePayment(
+            paymentToken,
+            user_id,
+            order_id
+        );
 
-        res.json(result);
+        res.json(response);
     } catch (e) {
         res.status(400).json({
             error: e,
@@ -42,13 +37,16 @@ router.post('/', express.json(), async function (req, res) {
 });
 
 // Redirect URL for PayMaya
-router.get('/:status', async function (req, res) {
+router.get('/:status/:order_id', async function (req, res) {
     try {
         console.log('REDIRECT URL PINGED');
-        console.log(req.params.status);
-        res.json({
-            status: req.params.status,
-        });
+        console.log(req.params);
+        let url = `${process.env.FRONTEND_URL}/payments/${req.params.order_id}/${req.params.status}`;
+        res.redirect(url);
+
+        // res.json({
+        //     status: req.params.status,
+        // });
     } catch (e) {
         res.status(400).json({
             error: e,

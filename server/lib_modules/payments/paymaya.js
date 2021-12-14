@@ -12,6 +12,9 @@ const paymayaCredentials = {
     password: '',
 };
 
+const knex = require('../utility/database/knexStore');
+const sqls = require('../utility/database/SQLs');
+
 const paymayaUrls = {
     // Tokenizing credit cards
     CreatePayMayaToken:
@@ -90,6 +93,19 @@ exports.TokenizeCard = async (card) => {
 // POSTs the payment to PayMaya
 exports.CreatePayment = async (paymentToken, user_id, order_id) => {
     try {
+        await Startup();
+        // Build the body
+        // Get the cart items associated with the user and current order_id
+        let sql = sqls.orders.ReadCartContentsJSON;
+        sql = sql.replace('<VAR1>', order_id);
+        let items = await knex.DatabaseQuery({ sql });
+        items = items[0].json_agg;
+
+        let totalAmount = {
+            amount: items[0].total,
+            currency: 'PHP',
+        };
+
         // BODY REFERENCE
         /**
          * {
@@ -144,52 +160,22 @@ exports.CreatePayment = async (paymentToken, user_id, order_id) => {
 
         let body = {
             paymentTokenId: paymentToken,
-            totalAmount: {
-                amount: 100,
-                currency: 'PHP',
-            },
+            totalAmount,
             buyer: {
                 firstName: 'John',
                 middleName: 'Paul',
                 lastName: 'Doe',
-                birthday: '1995-10-24',
-                customerSince: '1995-10-24',
-                sex: 'M',
-                contact: {
-                    phone: '+639181008888',
-                    email: 'merchant@merchantsite.com',
-                },
-                shippingAddress: {
-                    firstName: 'John',
-                    middleName: 'Paul',
-                    lastName: 'Doe',
-                    phone: '+639181008888',
-                    email: 'merchant@merchantsite.com',
-                    line1: '6F Launchpad',
-                    line2: 'Reliance Street',
-                    city: 'Mandaluyong City',
-                    state: 'Metro Manila',
-                    zipCode: '1552',
-                    countryCode: 'PH',
-                    shippingType: 'ST', // ST - for standard, SD - for same day
-                },
-                billingAddress: {
-                    line1: '6F Launchpad',
-                    line2: 'Reliance Street',
-                    city: 'Mandaluyong City',
-                    state: 'Metro Manila',
-                    zipCode: '1552',
-                    countryCode: 'PH',
-                },
             },
             redirectUrl: {
-                success: `${process.env.SERVER_URL}/payments/paymaya/success`,
-                failure: `${process.env.SERVER_URL}/payments/paymaya/failure`,
-                cancel: `${process.env.SERVER_URL}/payments/paymaya/cancel`,
+                success: `${process.env.SERVER_URL}/payments/paymaya/success/${order_id}`,
+                failure: `${process.env.SERVER_URL}/payments/paymaya/failure/${order_id}`,
+                cancel: `${process.env.SERVER_URL}/payments/paymaya/cancel/${order_id}`,
             },
             requestReferenceNumber: '',
             metadata: {
                 devaku: true,
+                user_id,
+                order_id,
             },
         };
 
@@ -210,8 +196,7 @@ exports.CreatePayment = async (paymentToken, user_id, order_id) => {
                 console.error('\n Axios Error');
                 throw e.response.data;
             });
-
-        console.log(response);
+        return response;
     } catch (e) {
         console.log(e);
     }
@@ -334,3 +319,14 @@ async function DeleteWebhooks(webhoooks) {
         console.error(e);
     }
 }
+
+const Startup = async () => {
+    console.log('\n Getting webhooks!');
+    let webhooks = await GetWebhooks();
+
+    if (webhooks) {
+        await DeleteWebhooks(webhooks);
+    }
+
+    await RegisterWebhooks();
+};

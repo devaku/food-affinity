@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Components
 import Header from '../components/Header';
@@ -14,6 +15,7 @@ import { GetLocalStorage, SaveLocalStorage } from '../services/utility';
 import * as api from '../api';
 
 function Menu() {
+    const navigate = useNavigate();
     let [categoryName, setCategoryName] = useState('Menu');
     let [total, setTotal] = useState('');
     let [categories, setCategories] = useState({
@@ -116,7 +118,11 @@ function Menu() {
         closeModal(false);
 
         // Edit the item on the cart
-        let result = await api.DELETE_CartContents(user_id, orders.id, product_id);
+        let result = await api.DELETE_CartContents(
+            user_id,
+            orders.id,
+            product_id
+        );
 
         let { total, items } = result;
         setTotal(parseInt(total));
@@ -129,7 +135,12 @@ function Menu() {
     };
 
     const handleCheckout = async (e) => {
-        console.log('checkout click');
+        // Check first if cart has items before redirecting
+        navigate('/payments/', {
+            state: {
+                key: 'value',
+            },
+        });
     };
 
     // DEBUG

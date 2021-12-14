@@ -7,9 +7,8 @@ export const READ_Home = () => {
     return fetch(`${baseURL}/`).then((res) => res.json());
 };
 
-/**
- * PRODUCT
- */
+//#region Products
+
 // Get all products
 export const READ_AllProducts = () => {
     return fetch(`${baseURL}/products`).then((res) => res.json());
@@ -26,17 +25,19 @@ export const READ_SomeProducts = (id) => {
     );
 };
 
-/**
- * CATEGORIES
- */
+//#endregion
+
+//#region Categories
+
 // Get all categories
 export const READ_AllCategories = () => {
     return fetch(`${baseURL}/categories`).then((res) => res.json());
 };
 
-/**
- * ORDERS
- */
+//#endregion
+
+//#region ORDERS
+
 // Create an ORDER DETAILS ENTRY
 export const CREATE_OrderDetails = (user_id, total, payment_id) => {
     let data = {
@@ -81,9 +82,10 @@ export const DELETE_OrderDetails = (user_id, order_id) => {
     }).then((res) => res.json());
 };
 
-/**
- * CART
- */
+//#endregion
+
+//#region CART
+
 // Insert an item into the cart
 export const CREATE_CartContents = (
     order_id,
@@ -140,9 +142,9 @@ export const DELETE_CartContents = (user_id, order_id, product_id) => {
     }).then((res) => res.json());
 };
 
-/**
- * PAYMENT DETAILS
- */
+//#endregion
+
+//#region PAYMENT DETAILS
 
 // Create a payment transaction
 // Returns a payment_details_id
@@ -209,3 +211,28 @@ export const UPDATE_ProviderPaymentDetails = (payment_details_id, provider) => {
         body: JSON.stringify(data),
     }).then((res) => res.json());
 };
+//#endregion
+
+//#region PAYMAYA
+
+// Get paymaya credentials
+export const CREATE_PayMayaPayment = (paymentToken, user_id, order_id) => {
+    let data = {
+        paymentToken,
+        user_id,
+        order_id,
+    };
+
+    // API key. lol
+    let secret_key = 'dragons';
+
+    return fetch(`${baseURL}/payments/paymaya/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': `${secret_key}`,
+        },
+        body: JSON.stringify(data),
+    }).then((res) => res.json());
+};
+//#endregion

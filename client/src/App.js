@@ -9,6 +9,8 @@ import './css/z.loading.css';
 import Landing from './pages/Landing';
 import Menu from './pages/Menu';
 import SignUp from './pages/SignUp';
+import Paymaya from './pages/Paymaya';
+import Status from './pages/Status';
 
 class App extends React.Component {
     render() {
@@ -18,6 +20,14 @@ class App extends React.Component {
                     <Route path="/" exact element={<Landing></Landing>}></Route>
                     <Route path="/menu" element={<Menu></Menu>}></Route>
                     <Route path="/login" element={<SignUp></SignUp>}></Route>
+                    <Route
+                        path="/payments"
+                        element={<Paymaya></Paymaya>}
+                    ></Route>
+                    <Route
+                        path="/payments/:order_id/:status"
+                        element={<Status></Status>}
+                    ></Route>
                 </Routes>
             </Router>
         );
