@@ -57,8 +57,12 @@ router.get('/:status/:order_id', async function (req, res) {
 // Webhook for paymaya
 router.post('/webhook/:type', express.json(), async function (req, res) {
     try {
+        console.log('WEBHOOK URL PINGED');
+        console.log(req.params.type);
+        console.log('BODY: ', JSON.stringify(req.body));
         //#region JSON REFERENCES
-        // SUCCESS JSON
+
+        //#region SUCCESS JSON
         // {
         //     "id": "ee54746b-28fd-4b92-91f7-be31bde4d334",
         //     "isPaid": true,
@@ -95,8 +99,9 @@ router.post('/webhook/:type', express.json(), async function (req, res) {
         //     "receiptNumber": "ae450cc4ad23",
         //     "requestReferenceNumber": ""
         //   }
+        //#endregion
 
-        // EXPIRED JSON
+        //#region EXPIRED JSON
         // {
         //     "id": "d9643fb9-46d3-4c3f-8c21-95f0b95f58d9",
         //     "isPaid": false,
@@ -112,6 +117,7 @@ router.post('/webhook/:type', express.json(), async function (req, res) {
         //     "paymentTokenId": "bCa5g6GlZLROBlgsBuMrZK2BHJJSdXDwUy7rPHSUBLIGLfsKW9FbNPvuUL7a6uAr4BRq4L0RBUHqnL1CrmH0FbW9mUqSVS9u060HWQeNIcwak4rMHNOub3coAfWvrFCk7ppv1JhUVLNTAGB6e1oYl0Kgw1xZeaXL3XM2Rb8Ks"
         //   }
         //#endregion
+        //#endregion
 
         // Check metadata
         // Just for debugging purposes
@@ -126,12 +132,42 @@ router.post('/webhook/:type', express.json(), async function (req, res) {
             return;
         }
 
-        console.log('WEBHOOK URL PINGED');
-        console.log(req.params.type);
-        console.log('BODY: ', JSON.stringify(req.body));
-        res.json({
-            status: req.params.type,
-        });
+        /**
+         * This is where you store the PayMaya response to the database
+         * but since this is an offline thing, it wouldn't really be saved
+         * since the Webhook can't be POSTed to localhost (duh)
+         * unless you route it with ngrok and expose the web server
+         *
+         * Technically, it can be if hosted on Heroku or something
+         * but you get the idea.
+         *
+         */
+
+        let { id: merchant_id, amount, metadata } = body;
+        let { payment_details_id } = metadata;
+        let { type } = req.params;
+
+        // If payment succeeded
+        if (type === 'success') {
+            // Update order_details
+            let sql = sqls.payment_details.UpdateFinishPaymentDetails;
+            sql = sql.replace('<VAR1>', merchant_id);
+            sql = sql.replace('<VAR2>', JSON.stringify(body));
+            sql = sql.replace('<VAR3>', parseInt(amount));
+            sql = sql.replace('<VAR4>', 'PAYMAYA');
+            sql = sql.replace('<VAR5>', 2);
+            sql = sql.replace('<VAR6>', payment_details_id);
+
+            await knex.DatabaseQuery({ sql });
+
+            res.json({
+                status: req.params.type,
+            });
+        } else {
+            res.json({
+                status: req.params.type,
+            });
+        }
     } catch (e) {
         res.status(400).json({
             error: e,

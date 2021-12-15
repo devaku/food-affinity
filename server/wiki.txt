@@ -12,6 +12,13 @@ Run migration:
 
 knex migrate:latest
 
+==== 
+ENUM
+NOTPAID: 1,
+SUCCESS: 2,
+ERROR: 3,
+REFUNDED: 4,
+
 =============
 USER TRANSACTION FLOW
 

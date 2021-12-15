@@ -135,12 +135,10 @@ function Menu() {
     };
 
     const handleCheckout = async (e) => {
-        // Check first if cart has items before redirecting
-        navigate('/payments/', {
-            state: {
-                key: 'value',
-            },
-        });
+        if (cart.entities.length > 0) {
+            // Check first if cart has items before redirecting
+            navigate('/payments/');
+        }
     };
 
     // DEBUG

@@ -101,6 +101,11 @@ exports.CreatePayment = async (paymentToken, user_id, order_id) => {
         let items = await knex.DatabaseQuery({ sql });
         items = items[0].json_agg;
 
+        sql = sqls.orders.ReadOrderEntry;
+        sql = sql.replace('<VAR1>', order_id);
+        let result = await knex.DatabaseQuery({ sql });
+        let { payment_id: payment_details_id } = result;
+
         let totalAmount = {
             amount: items[0].total,
             currency: 'PHP',
@@ -176,6 +181,7 @@ exports.CreatePayment = async (paymentToken, user_id, order_id) => {
                 devaku: true,
                 user_id,
                 order_id,
+                payment_details_id,
             },
         };
 

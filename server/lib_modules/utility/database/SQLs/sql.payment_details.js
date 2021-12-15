@@ -11,3 +11,6 @@ exports.UpdateAmountPaymentDetails =
 
 exports.UpdateProviderPaymentDetails =
     'UPDATE payment_details SET provider = <VAR1> WHERE id = <VAR2>';
+
+exports.UpdateFinishPaymentDetails =
+    'UPDATE payment_details SET merchant_id = <VAR1>, merchant_data = "<VAR2>", amount = <VAR3>, provider = "<VAR4>", status = "<VAR5>"  WHERE id = <VAR6>';

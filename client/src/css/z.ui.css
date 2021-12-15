@@ -41,6 +41,7 @@ html {
 .category-bar,
 .food-options,
 .modal-food-details,
+.status,
 .footer {
     background-color: var(--rich-blue);
 }
