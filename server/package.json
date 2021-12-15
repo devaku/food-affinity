@@ -6,7 +6,7 @@
   "scripts": {
     "heroku-postbuild": "npm run install-server",
     "install-server": "npm install",
-    "postinstall-server": "knex migrate:rollback && knex migrate:latest && knex seed:run",
+    "z-postinstall-server": "knex migrate:rollback && knex migrate:latest && knex seed:run",
     "dev": "nodemon index.js",
     "test": "nodemon test.js"
   },
