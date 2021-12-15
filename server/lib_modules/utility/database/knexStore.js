@@ -6,7 +6,7 @@ module.exports = {
     DatabaseQuery: async function DatabaseQuery({ sql }) {
         try {
             let returnedRows;
-            if (process.env.DB_ENVIRONMENT === 'heroku') {
+            if (process.env.DB_ENVIRONMENT === 'production') {
                 returnedRows = await knex.raw(sql);
             } else {
                 returnedRows = await knex.raw(sql).debug();

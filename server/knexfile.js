@@ -68,7 +68,7 @@ module.exports = {
 
     staging: {},
 
-    heroku: {
+    production: {
         client: 'postgresql',
         connection: process.env.DB_POSTGRES_CONNECTION_STRING,
         pool: {
@@ -80,22 +80,6 @@ module.exports = {
         },
         seeds: {
             directory: './lib_modules/utility/database/seeds',
-        },
-    },
-
-    production: {
-        client: 'postgresql',
-        connection: {
-            database: 'my_db',
-            user: 'username',
-            password: 'password',
-        },
-        pool: {
-            min: 2,
-            max: 10,
-        },
-        migrations: {
-            tableName: 'knex_migrations',
         },
     },
 };
