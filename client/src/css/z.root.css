@@ -1,9 +1,9 @@
 :root {
-    --light-blue: #c0d6df;
-    --yellow: #f1fb93;
-    --rich-blue: #025497;
-    --dark-blue: #01223c;
-    --violet: #320e3b;
-    --orange: #ff715b;
-    --brown: #feb860;
+    --z-light-blue: #c0d6df;
+    --z-yellow: #f1fb93;
+    --z-rich-blue: #025497;
+    --z-dark-blue: #01223c;
+    --z-violet: #320e3b;
+    --z-orange: #ff715b;
+    --z-brown: #feb860;
 }

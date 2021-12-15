@@ -5,11 +5,11 @@ html {
 /* BUTTONS */
 .z-btn {
     background-color: transparent;
-    border-color: var(--yellow);
+    border-color: var(--z-yellow);
     border-radius: 0.375rem;
     border-style: solid;
     border-width: 0.125rem;
-    color: var(--yellow);
+    color: var(--z-yellow);
     font-weight: 500;
     height: 100%;
     padding: 0.375rem 0.75rem;
@@ -18,7 +18,7 @@ html {
 
 .z-btn:hover,
 .z-btn:active {
-    background-color: var(--violet);
+    background-color: var(--z-violet);
 }
 
 .z-btn-xx .z-btn-xx-large {
@@ -43,30 +43,30 @@ html {
 .modal-food-details,
 .status,
 .footer {
-    background-color: var(--rich-blue);
+    background-color: var(--z-rich-blue);
 }
 
 .checkout,
 .modal-footer {
-    background-color: var(--dark-blue);
+    background-color: var(--z-dark-blue);
 }
 
 .cart-item {
-    background-color: var(--yellow);
+    background-color: var(--z-yellow);
 }
 
 /* TEXT RELATED */
 
 .z-text-yellow {
-    color: var(--yellow);
+    color: var(--z-yellow);
 }
 
 .z-text-orange {
-    color: var(--orange);
+    color: var(--z-orange);
 }
 
 .z-text-brown {
-    color: var(--brown);
+    color: var(--z-brown);
 }
 
 /* LAYOUTS */
